@@ -12,7 +12,37 @@ import {
   View
 } from 'react-native';
 
+import ZeroconfRegistry from 'react-native-zeroconf-registry';
+console.log("imported from react-native-zeroconf-registry");
+console.log(ZeroconfRegistry);
+const zRegistry = new ZeroconfRegistry();
+
 export default class ZeroconfExample extends Component {
+  componentWillMount() {
+    zRegistry.on('start', () => console.log('The scan has started.'))
+    zRegistry.on('stop', () => console.log('The scan is done.'))
+    zRegistry.on('update', () => {
+      console.log('The scan had an update')
+      console.log(zRegistry.getServices())
+    })
+    zRegistry.on('found', (name) => console.log('found: ' + name))
+    zRegistry.on('resolved', (resolved) => console.log('resolved: ' + resolved))
+    zRegistry.on('error', (err) => console.log('error: ' + err))
+    zRegistry.on('remove', (remove) => console.log('remove: ' + remove))
+    try {
+      console.log("calling scan")
+      zRegistry.scan('_alfred_srv_brain')
+      console.log("scan called")
+    } catch (err) {
+      console.log(err)
+    }
+
+    setTimeout(() => {
+      console.log("few seconds passed, now whats the services look like?")
+      console.log(zRegistry.getServices())
+    }, 3000)
+  }
+
   render() {
     return (
       <View style={styles.container}>

@@ -1,3 +1,5 @@
 rootProject.name = 'ZeroconfExample'
+include ':react-native-zeroconf-registry'
+project(':react-native-zeroconf-registry').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-zeroconf-registry/android')
 
 include ':app'
